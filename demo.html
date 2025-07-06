@@ -1,0 +1,3194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhyUser - Who, What, Why</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --bg-primary: #faf8f5;
+            --bg-secondary: rgba(246, 243, 238, 0.8);
+            --bg-accent: rgba(235, 227, 215, 0.3);
+            --text-primary: #1a1816;
+            --text-secondary: #4a453f;
+            --text-tertiary: #726a5f;
+            --accent: #8b6b47;
+            --accent-hover: #735639;
+            --success: #22863a;
+            --error: #dc3545;
+            --warning: #f59e0b;
+            --border: rgba(139, 107, 71, 0.1);
+            --shadow: rgba(26, 24, 22, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(250, 248, 245, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            background: rgba(250, 248, 245, 0.95);
+            box-shadow: 0 2px 40px var(--shadow);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 72px;
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .logo:hover {
+            opacity: 0.7;
+        }
+
+        .tagline {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            font-weight: 400;
+            letter-spacing: 0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 36px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .cta-button {
+            background: var(--accent);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .cta-button:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(139, 107, 71, 0.2);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 140px 0 80px;
+            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -25%;
+            width: 70%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(139, 107, 71, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: clamp(36px, 7vw, 60px);
+            font-weight: 600;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 24px;
+            color: var(--text-primary);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--error) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 24px;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-bottom: 48px;
+            line-height: 1.5;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            margin: 48px 0;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            color: var(--text-tertiary);
+        }
+
+        /* Hero CTAs */
+        .hero-ctas {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .hero-cta {
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hero-cta.primary {
+            background: var(--accent);
+            color: white;
+            border: 2px solid transparent;
+        }
+
+        .hero-cta.primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(139, 107, 71, 0.25);
+        }
+
+        .hero-cta.secondary {
+            background: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+        }
+
+        .hero-cta.secondary:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(139, 107, 71, 0.25);
+        }
+
+        /* Updated Comparison Section */
+        .comparison-section {
+            padding: 80px 0;
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+        }
+
+        .comparison-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .comparison-header h2 {
+            font-size: 48px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .comparison-card {
+            padding: 40px;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .comparison-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent 0%, currentColor 50%, transparent 100%);
+        }
+
+        .comparison-card.old {
+            background: rgba(220, 53, 69, 0.05);
+            border: 1px solid rgba(220, 53, 69, 0.2);
+            color: var(--text-primary);
+        }
+
+        .comparison-card.old::before {
+            color: var(--error);
+        }
+
+        .comparison-card.new {
+            background: rgba(34, 134, 58, 0.05);
+            border: 1px solid rgba(34, 134, 58, 0.2);
+            transform: scale(1.02);
+            box-shadow: 0 8px 40px rgba(34, 134, 58, 0.1);
+        }
+
+        .comparison-card.new::before {
+            color: var(--success);
+        }
+
+        .comparison-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .comparison-features {
+            display: grid;
+            gap: 24px;
+        }
+
+        .feature-group {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 24px;
+        }
+
+        .feature-group:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .feature-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-tertiary);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .feature-content {
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text-primary);
+        }
+
+        .feature-content strong {
+            font-weight: 600;
+            color: inherit;
+        }
+
+        .comparison-card.old .feature-content strong {
+            color: var(--error);
+        }
+
+        .comparison-card.new .feature-content strong {
+            color: var(--success);
+        }
+
+        .missing-feature {
+            opacity: 0.5;
+            font-style: italic;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-top: 8px;
+        }
+
+        .feature-list li {
+            padding: 4px 0;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .feature-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--text-tertiary);
+        }
+
+        /* Predictor Section - Now Third */
+        .predictor-section {
+            padding: 80px 0;
+            background: var(--bg-primary);
+        }
+
+        .predictor-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .predictor-header h2 {
+            font-size: 48px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .predictor-form {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .form-section {
+            margin-bottom: 40px;
+        }
+
+        .form-section h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .url-input {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+            align-items: center;
+        }
+
+        .url-input input {
+            flex: 1;
+            padding: 14px 20px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.7);
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .url-input input:focus {
+            border-color: var(--accent);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(139, 107, 71, 0.1);
+        }
+
+        .url-status {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .url-status.valid {
+            background: rgba(34, 134, 58, 0.1);
+            color: var(--success);
+        }
+
+        .url-status.checking {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .add-variant-btn {
+            background: transparent;
+            border: 2px dashed var(--border);
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: fit-content;
+        }
+
+        .add-variant-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(139, 107, 71, 0.05);
+        }
+
+        /* Multi-stage Funnel */
+        .funnel-toggle {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--border);
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.toggle-slider {
+            background-color: var(--accent);
+        }
+
+        input:checked+.toggle-slider:before {
+            transform: translateX(24px);
+        }
+
+        .funnel-steps {
+            display: none;
+            gap: 16px;
+            padding: 20px;
+            background: var(--bg-accent);
+            border-radius: 8px;
+            margin-top: 16px;
+        }
+
+        .funnel-steps.show {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+
+        .step-input {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .step-input label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .step-input input {
+            padding: 10px 16px;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .step-input input:focus {
+            border-color: var(--accent);
+            background: white;
+        }
+
+        /* Accuracy Comparison */
+        .accuracy-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 16px;
+        }
+
+        .accuracy-option {
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .accuracy-option:hover {
+            border-color: var(--accent);
+            background: rgba(139, 107, 71, 0.02);
+        }
+
+        .accuracy-option.recommended {
+            border-color: rgba(139, 107, 71, 0.3);
+            background: rgba(139, 107, 71, 0.05);
+        }
+
+        .accuracy-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .accuracy-header input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            cursor: pointer;
+        }
+
+        .accuracy-header label {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+        .accuracy-title {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .accuracy-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .recommended-badge {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: var(--accent);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .accuracy-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin: 0;
+            padding-left: 32px;
+        }
+
+        .ga4-connect {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .ga4-button {
+            width: 100%;
+            padding: 12px 20px;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .ga4-button:hover {
+            border-color: var(--accent);
+            background: rgba(139, 107, 71, 0.02);
+        }
+
+        .ga4-security {
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--text-tertiary);
+            text-align: center;
+        }
+
+        .predict-button {
+            width: 100%;
+            padding: 20px 40px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin-top: 32px;
+        }
+
+        .predict-button:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(139, 107, 71, 0.3);
+        }
+
+        /* Calculator Section */
+        .calculator-section {
+            padding: 80px 0;
+            background: var(--bg-secondary);
+            position: relative;
+        }
+
+        .calculator {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .calculator-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .calculator-header h2 {
+            font-size: 36px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-group label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .input-group input,
+        .input-group select {
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.7);
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            border-color: var(--accent);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(139, 107, 71, 0.1);
+        }
+
+        .calculate-button {
+            width: 100%;
+            padding: 16px 32px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .calculate-button:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 30px rgba(139, 107, 71, 0.25);
+        }
+
+        .calculate-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .calculate-button:active::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        .results-panel {
+            margin-top: 32px;
+            padding: 32px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            display: none;
+        }
+
+        .results-panel.show {
+            opacity: 1;
+            transform: translateY(0);
+            display: block;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .result-row:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .result-value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .result-value.highlight {
+            color: var(--error);
+            font-size: 18px;
+        }
+
+        .result-value.success {
+            color: var(--success);
+            font-size: 18px;
+        }
+
+        /* Testimonial */
+        .testimonial {
+            padding: 64px 0;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .quote {
+            font-size: 24px;
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            font-style: italic;
+        }
+
+        .quote-author {
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+
+        .quote-impact {
+            margin-top: 16px;
+            padding: 16px 24px;
+            background: var(--bg-accent);
+            border-radius: 8px;
+            display: inline-block;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        /* Analysis Progress */
+        .analysis-section {
+            padding: 80px 0;
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+            display: none;
+        }
+
+        .analysis-section.show {
+            display: block;
+        }
+
+        /* Personas Display */
+        .personas-display {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .personas-header {
+            margin-bottom: 48px;
+        }
+
+        .personas-header h2 {
+            font-size: 36px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .personas-header p {
+            font-size: 18px;
+            color: var(--text-secondary);
+        }
+
+        .personas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .persona-card {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            padding: 24px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .persona-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px var(--shadow);
+        }
+
+        .persona-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .persona-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .persona-role {
+            font-size: 14px;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .persona-traffic {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .persona-traits {
+            list-style: none;
+            text-align: left;
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .persona-traits li {
+            padding: 4px 0;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .persona-traits li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        .personas-action {
+            margin-top: 48px;
+        }
+
+        .personas-action p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .start-simulation-button {
+            padding: 16px 40px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .start-simulation-button:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 30px rgba(139, 107, 71, 0.25);
+        }
+
+        .progress-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .progress-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 32px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent) 0%, var(--success) 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 100px;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.5) 100%);
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100px);
+            }
+
+            100% {
+                transform: translateX(100px);
+            }
+        }
+
+        .live-simulation {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            padding: 32px;
+            margin-top: 32px;
+            backdrop-filter: blur(10px);
+        }
+
+        .simulation-log {
+            background: var(--bg-primary);
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .log-entry {
+            margin-bottom: 8px;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .log-time {
+            color: var(--text-tertiary);
+            margin-right: 12px;
+        }
+
+        .log-action {
+            color: var(--text-secondary);
+        }
+
+        .log-error {
+            color: var(--error);
+            font-weight: 500;
+        }
+
+        /* Results Section - Enhanced */
+        .results-section {
+            padding: 80px 0;
+            background: var(--bg-primary);
+            display: none;
+        }
+
+        .results-section.show {
+            display: block;
+        }
+
+        .results-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .impact-summary {
+            background: linear-gradient(135deg, rgba(34, 134, 58, 0.05) 0%, rgba(34, 134, 58, 0.1) 100%);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 48px;
+            border: 1px solid rgba(34, 134, 58, 0.2);
+        }
+
+        .impact-summary h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: var(--success);
+        }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+        }
+
+        .impact-metric {
+            text-align: center;
+        }
+
+        .impact-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .impact-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .variant-results {
+            display: grid;
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .variant-card {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            padding: 32px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .variant-card.winner {
+            border-color: var(--success);
+            background: rgba(34, 134, 58, 0.05);
+        }
+
+        .variant-card.loser {
+            border-color: var(--error);
+            background: rgba(220, 53, 69, 0.05);
+        }
+
+        .variant-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .variant-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .variant-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .variant-badge.win {
+            background: var(--success);
+            color: white;
+        }
+
+        .variant-badge.lose {
+            background: var(--error);
+            color: white;
+        }
+
+        /* Committee Insights Styling */
+        .variant-card h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .committee-reactions {
+            background: var(--bg-accent);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        .committee-reactions ul {
+            list-style: none;
+            margin-top: 8px;
+            line-height: 1.8;
+        }
+
+        .committee-reactions li {
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .committee-reactions li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        .variant-card.loser .committee-reactions {
+            background: rgba(220, 53, 69, 0.1);
+        }
+
+        .variant-card.loser .committee-reactions li::before {
+            content: '❌';
+            left: -4px;
+        }
+
+        .variant-card.winner .committee-reactions {
+            background: rgba(34, 134, 58, 0.1);
+        }
+
+        .variant-card.winner .committee-reactions li::before {
+            content: '✅';
+            left: -4px;
+        }
+
+        /* Analysis metadata box */
+        .analysis-metadata {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 32px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+        }
+
+        .analysis-metadata p {
+            margin: 0;
+            line-height: 1.8;
+        }
+
+        /* Recommendation boxes */
+        .recommendation-box {
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        .recommendation-box.negative {
+            background: rgba(220, 53, 69, 0.05);
+        }
+
+        .recommendation-box.positive {
+            background: rgba(34, 134, 58, 0.05);
+        }
+
+        /* Why Win/Lose Analysis */
+        .analysis-box {
+            margin-top: 48px;
+            padding: 32px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .analysis-box h4 {
+            margin-bottom: 12px;
+        }
+
+        .analysis-box ul {
+            line-height: 1.8;
+            margin-left: 20px;
+        }
+
+        .funnel-visualization {
+            margin-top: 48px;
+            padding: 32px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .funnel-stage {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .funnel-stage:last-child {
+            border-bottom: none;
+        }
+
+        .stage-info {
+            flex: 1;
+        }
+
+        .stage-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .stage-metrics {
+            display: flex;
+            gap: 24px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .metric-change {
+            font-weight: 600;
+        }
+
+        .metric-change.positive {
+            color: var(--success);
+        }
+
+        .metric-change.negative {
+            color: var(--error);
+        }
+
+        /* Features */
+        .features-section {
+            padding: 80px 0;
+            background: var(--bg-secondary);
+        }
+
+        .features-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature {
+            padding: 32px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .feature:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px var(--shadow);
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 16px;
+        }
+
+        .feature-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .feature-description {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Waitlist Section */
+        .waitlist-section {
+            padding: 80px 0;
+            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+        }
+
+        .waitlist-container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .waitlist-header {
+            margin-bottom: 48px;
+        }
+
+        .waitlist-form {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 16px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 20px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.7);
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--accent);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(139, 107, 71, 0.1);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 16px 32px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 30px rgba(139, 107, 71, 0.25);
+        }
+
+        .privacy-note {
+            margin-top: 16px;
+            font-size: 14px;
+            color: var(--text-tertiary);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text-primary);
+            color: rgba(255, 255, 255, 0.9);
+            padding: 64px 0 32px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+
+        .footer-section h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: white;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section li {
+            margin-bottom: 12px;
+        }
+
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 15px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 32px;
+            text-align: center;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .mobile-menu-toggle span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--text-primary);
+            margin-bottom: 6px;
+            transition: all 0.3s ease;
+        }
+
+        /* Funnel Stage Responsive Improvements */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 72px;
+                left: 0;
+                right: 0;
+                background: rgba(250, 248, 245, 0.98);
+                flex-direction: column;
+                padding: 24px;
+                gap: 24px;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                box-shadow: 0 4px 40px var(--shadow);
+            }
+
+            .nav-links.open {
+                transform: translateX(0);
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            h1 {
+                font-size: clamp(30px, 10vw, 48px);
+            }
+
+            .hero-stats {
+                gap: 24px;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .comparison-card.new {
+                transform: scale(1);
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .accuracy-comparison {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .personas-grid {
+                grid-template-columns: 1fr;
+            }
+
+            /* Funnel stage responsive */
+            .funnel-visualization div[style*="display: flex"] {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 8px;
+            }
+
+            .funnel-visualization span {
+                font-size: 14px;
+            }
+
+            .hero-ctas {
+                flex-direction: column;
+                gap: 16px;
+                width: 100%;
+            }
+
+            .hero-cta {
+                width: 100%;
+                text-align: center;
+                justify-content: center;
+            }
+        }
+
+        /* Loading States */
+        .loading {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.5) 50%, transparent 100%);
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% {
+                left: -100%;
+            }
+
+            100% {
+                left: 100%;
+            }
+        }
+
+        /* Success Animation */
+        .success-checkmark {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            position: relative;
+            display: none;
+        }
+
+        .success-checkmark.show {
+            display: block;
+        }
+
+        .success-checkmark svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .success-checkmark .circle {
+            stroke: var(--success);
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            animation: circle 0.6s ease forwards;
+        }
+
+        .success-checkmark .check {
+            stroke: var(--success);
+            stroke-width: 3;
+            fill: none;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: check 0.3s ease forwards 0.6s;
+        }
+
+        @keyframes circle {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes check {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <div class="logo-container">
+                    <a href="#" class="logo">WhyUser</a>
+                    <span class="tagline">Predict Before You Test</span>
+                </div>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#predictor">Predict Tests</a></li>
+                    <li><a href="#calculator">Calculate Waste</a></li>
+                    <li><a href="#features">How It Works</a></li>
+                    <li><a href="#waitlist">Early Access</a></li>
+                </ul>
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content fade-in">
+                <h1>Stop Wasting <span class="gradient-text"> $25K</span><br> on A/B Tests That Fail</h1>
+                <p class="hero-subtitle">Predict Before You Test. Know winners in hours, not weeks.</p>
+
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-value">1h</div>
+                        <div class="stat-label">vs 8 weeks</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">80%</div>
+                        <div class="stat-label">accuracy</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">$25K</div>
+                        <div class="stat-label">saved per test</div>
+                    </div>
+                </div>
+
+                <div class="hero-ctas">
+                    <a href="#predictor" class="hero-cta primary">
+                        <span>⚡</span>
+                        <span>Predict My Test Now</span>
+                    </a>
+                    <a href="#calculator" class="hero-cta secondary">
+                        <span>📊</span>
+                        <span>Calculate My Waste</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Updated Comparison Section -->
+    <section class="comparison-section">
+        <div class="container">
+            <div class="comparison-header fade-in">
+                <h2>Skip the Failures, Test Only Winners</h2>
+                <p>Know what works in hours before launching — not from post-mortems 8 weeks later</p>
+            </div>
+
+            <div class="comparison-grid">
+                <div class="comparison-card old fade-in">
+                    <h3 class="comparison-title">❌ Traditional A/B Testing</h3>
+                    <div class="comparison-features">
+                        <div class="feature-group">
+                            <div class="feature-label">Time & Cost</div>
+                            <div class="feature-content">
+                                <strong>8+ weeks</strong> to learn what failed<br>
+                                <strong>$25K wasted</strong> per failed test<br>
+                                87% failure rate industry average
+                            </div>
+                        </div>
+
+                        <div class="feature-group">
+                            <div class="feature-label">B2B Blind Spots</div>
+                            <div class="feature-content">
+                                <span class="missing-feature">Can't model buying committees</span><br>
+                                Treats all visitors the same<br>
+                                Built for B2C single buyers
+                            </div>
+                        </div>
+
+                        <div class="feature-group">
+                            <div class="feature-label">Limited Scope</div>
+                            <div class="feature-content">
+                                Tests single pages in isolation<br>
+                                <span class="missing-feature">Misses multi-stage journey impact</span><br>
+                                Can't predict compound effects
+                            </div>
+                        </div>
+
+                        <div class="feature-group">
+                            <div class="feature-label">Traffic Requirements</div>
+                            <div class="feature-content">
+                                Needs 2,000+ visitors per variant<br>
+                                B2B reality: 500-2,500/month total<br>
+                                Forces inconclusive results
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-card new fade-in">
+                    <h3 class="comparison-title">✅ WhyUser Intelligence</h3>
+                    <div class="comparison-features">
+                        <div class="feature-group">
+                            <div class="feature-label">Time & Cost</div>
+                            <div class="feature-content">
+                                <strong>hours</strong> to predict outcomes<br>
+                                <strong>Save $25K</strong> by skipping failures<br>
+                                80% prediction accuracy
+                            </div>
+                        </div>
+
+                        <div class="feature-group">
+                            <div class="feature-label">Buying Committee Simulation</div>
+                            <div class="feature-content">
+                                <strong>Models all buying committee roles</strong><br>
+                                Champions vs Economic vs Technical<br>
+                                Predicts stakeholder consensus
+                            </div>
+                        </div>
+
+                        <div class="feature-group">
+                            <div class="feature-label">Multi-Stage Journeys</div>
+                            <div class="feature-content">
+                                <strong>Tests complete buyer journeys</strong><br>
+                                Landing → Demo → Trial → Purchase<br>
+                                Finds compound lift opportunities
+                            </div>
+                        </div>
+
+                        <div class="feature-group">
+                            <div class="feature-label">Small Traffic Intelligence</div>
+                            <div class="feature-content">
+                                Works with 500+ visitors/month<br>
+                                AI simulates thousands of sessions<br>
+                                Statistically significant predictions
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Predictor Section - Now Third -->
+    <section class="predictor-section" id="predictor">
+        <div class="container">
+            <div class="predictor-header fade-in">
+                <h2>Predict Your A/B Test</h2>
+                <p>Enter your Control + Variants URLs for instant analysis</p>
+            </div>
+
+            <div class="predictor-form fade-in" id="predictorForm">
+                <div class="form-section">
+                    <h3>🏠 Control URL (Current Version)</h3>
+                    <div class="url-input">
+                        <input type="url" placeholder="https://yoursite.com/pricing" id="controlUrl" value="">
+                        <span class="url-status valid">✓ Valid</span>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>🆚 Test Variants</h3>
+                    <div class="url-input">
+                        <input type="url" placeholder="https://yoursite.com/pricing-v2" id="variantA" value="">
+                        <span class="url-status valid">✓ Valid</span>
+                    </div>
+                    <div id="additionalVariants"></div>
+                    <button class="add-variant-btn" onclick="addVariant()">+ Add Another Variant</button>
+                </div>
+
+                <div class="form-section">
+                    <h3>🎯 Success Metric</h3>
+                    <select
+                        style="width: 100%; padding: 14px 20px; border: 2px solid var(--border); border-radius: 8px; background: rgba(255, 255, 255, 0.7); font-size: 15px; font-family: inherit; outline: none;">
+                        <option value="trial">Trial Signup</option>
+                        <option value="demo">Demo Request</option>
+                        <option value="contact">Contact Sales</option>
+                        <option value="download">Content Download</option>
+                        <option value="custom">Custom Goal</option>
+                    </select>
+                </div>
+
+                <div class="form-section">
+                    <h3>🔗 Multi-Stage Funnel (Optional)</h3>
+                    <div class="funnel-toggle">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="enableFunnel" onchange="toggleFunnel()">
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span>Track complete buyer journey</span>
+                    </div>
+                    <div class="funnel-steps" id="funnelSteps">
+                        <div class="step-input">
+                            <label>Landing Page</label>
+                            <input type="text" placeholder="/features" value="/features">
+                        </div>
+                        <div class="step-input">
+                            <label>Demo/Trial</label>
+                            <input type="text" placeholder="/demo" value="/demo">
+                        </div>
+                        <div class="step-input">
+                            <label>Signup</label>
+                            <input type="text" placeholder="/signup" value="/signup">
+                        </div>
+                        <div class="step-input">
+                            <label>Activation</label>
+                            <input type="text" placeholder="/welcome" value="/welcome">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>🎯 Prediction Accuracy</h3>
+                    <div class="accuracy-comparison">
+                        <div class="accuracy-option">
+                            <div class="accuracy-header">
+                                <input type="radio" name="accuracy" id="defaultPersonas" value="default" checked>
+                                <label for="defaultPersonas">
+                                    <span class="accuracy-title">Industry Personas</span>
+                                    <span class="accuracy-value">62% accuracy</span>
+                                </label>
+                            </div>
+                            <p class="accuracy-desc">Use B2B behavioral patterns from 12,000+ tests</p>
+                        </div>
+
+                        <div class="accuracy-option recommended">
+                            <div class="accuracy-header">
+                                <input type="radio" name="accuracy" id="ga4Personas" value="ga4">
+                                <label for="ga4Personas">
+                                    <span class="accuracy-title">YOUR Personas</span>
+                                    <span class="accuracy-value">80% accuracy</span>
+                                    <span class="recommended-badge">Recommended</span>
+                                </label>
+                            </div>
+                            <p class="accuracy-desc">Generate personas from YOUR actual GA4 data</p>
+                            <div class="ga4-connect" id="ga4Connect" style="display: none;">
+                                <button class="ga4-button" onclick="connectGA4()">
+                                    <svg width="18" height="18" viewBox="0 0 18 18" style="margin-right: 8px;">
+                                        <path fill="currentColor"
+                                            d="M9 0C4.03 0 0 4.03 0 9s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 16c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7zm0-11a4 4 0 100 8 4 4 0 000-8z" />
+                                    </svg>
+                                    Connect Google Analytics
+                                </button>
+                                <p class="ga4-security">Read-only access • SOC2 compliant • Auto-deleted after analysis
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="predict-button" onclick="startPrediction()">Predict My Test Results Now</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Calculator Section -->
+    <section class="calculator-section" id="calculator">
+        <div class="container">
+            <div class="calculator fade-in">
+                <div class="calculator-header">
+                    <h2>Calculate Your A/B Testing Waste</h2>
+                    <p>See how much failed tests cost your B2B SaaS</p>
+                </div>
+
+                <div class="calculator-grid">
+                    <div class="input-group">
+                        <label>Company ARR</label>
+                        <select id="arr">
+                            <option value="2-5">$2-5M</option>
+                            <option value="5-15" selected>$5-15M</option>
+                            <option value="15-50">$15-50M</option>
+                            <option value="50-100">$50-100M</option>
+                            <option value="100+">$100M+</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Monthly Traffic</label>
+                        <input type="number" id="traffic" placeholder="e.g., 5000" value="5000">
+                    </div>
+                    <div class="input-group">
+                        <label>Tests Per Quarter</label>
+                        <input type="number" id="tests" placeholder="e.g., 3" value="3">
+                    </div>
+                    <div class="input-group">
+                        <label>Current Win Rate</label>
+                        <select id="winrate">
+                            <option value="10-20">10-20%</option>
+                            <option value="20-30" selected>20-30%</option>
+                            <option value="30-40">30-40%</option>
+                            <option value="40+">40%+</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="calculate-button" onclick="calculateROI()">Calculate My Testing Waste</button>
+
+                <div class="results-panel" id="calculatorResults">
+                    <div class="result-row">
+                        <span class="result-label">Failed tests this year</span>
+                        <span class="result-value highlight" id="failedTests">8 out of 12</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Cost of failures</span>
+                        <span class="result-value highlight" id="wasteCost">$200,000</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Time wasted</span>
+                        <span class="result-value highlight" id="timeWasted">64 weeks</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">With WhyUser savings</span>
+                        <span class="result-value success" id="neuralSavings">$140,000 + 56 weeks</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">ROI on WhyUser</span>
+                        <span class="result-value success" id="neuralROI">23x</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonial -->
+    <section class="testimonial">
+        <div class="container fade-in">
+            <p class="quote">"WhyUser predicted our checkout redesign would fail by 31%. We tested anyway to validate —
+                lost by 28%."</p>
+            <p class="quote-author">— Sarah Chen, VP Growth, TechFlow ($23M ARR)</p>
+            <div class="quote-impact">Total value: $25K saved + $43K gained = $68K impact</div>
+        </div>
+    </section>
+
+    <!-- Analysis Progress Section -->
+    <section class="analysis-section" id="analysisSection">
+        <div class="container">
+            <!-- Personas Display -->
+            <div class="personas-display" id="personasDisplay">
+                <div class="personas-header">
+                    <h2>Your B2B Buyer Personas</h2>
+                    <p id="personasSubtitle">Generated from industry patterns • 62% prediction accuracy</p>
+                </div>
+
+                <div class="personas-grid" id="personasGrid">
+                    <!-- Default personas will be inserted here -->
+                </div>
+
+                <div class="personas-action">
+                    <p>These personas will navigate your test variants to predict outcomes</p>
+                    <button class="start-simulation-button" onclick="startSimulation()">Start Behavioral
+                        Simulation</button>
+                </div>
+            </div>
+
+            <!-- Progress Container -->
+            <div class="progress-container" id="progressContainer" style="display: none;">
+                <div class="progress-header">
+                    <h2>Analyzing Your Test Variants</h2>
+                    <p>AI personas navigating your pages in real-time</p>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+
+                <div class="live-simulation">
+                    <h3>Live Persona Simulation</h3>
+                    <div class="simulation-log" id="simulationLog">
+                        <div class="log-entry">
+                            <span class="log-time">00:00</span>
+                            <span class="log-action">Starting analysis of 3 variants...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section - Enhanced -->
+    <section class="results-section" id="resultsSection">
+        <div class="container">
+            <div class="results-container">
+                <div class="progress-header">
+                    <h2>Your A/B Test Predictions Complete</h2>
+                </div>
+
+                <!-- Business Impact Summary -->
+                <div class="impact-summary">
+                    <h3>💰 Immediate Value</h3>
+                    <div class="impact-grid">
+                        <div class="impact-metric">
+                            <div class="impact-value">$25K</div>
+                            <div class="impact-label">Skip Variant A</div>
+                        </div>
+                        <div class="impact-metric">
+                            <div class="impact-value">$47K</div>
+                            <div class="impact-label">Quarterly Impact</div>
+                        </div>
+                        <div class="impact-metric">
+                            <div class="impact-value">8 weeks</div>
+                            <div class="impact-label">Time Saved</div>
+                        </div>
+                        <div class="impact-metric">
+                            <div class="impact-value" id="winConfidence">78%</div>
+                            <div class="impact-label">Win Confidence</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analysis Metadata -->
+                <div
+                    style="background: rgba(255, 255, 255, 0.5); border-radius: 12px; padding: 32px; margin-bottom: 32px; backdrop-filter: blur(10px); border: 1px solid var(--border);">
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; text-align: center;">
+                        <div>
+                            <p style="margin: 0; font-size: 14px; color: var(--text-tertiary); margin-bottom: 4px;">
+                                Analysis</p>
+                            <p style="margin: 0; font-weight: 600; color: var(--text-primary);">3 variants analyzed in
+                                <span style="color: var(--accent);">hours</span>
+                            </p>
+                        </div>
+                        <div>
+                            <p style="margin: 0; font-size: 14px; color: var(--text-tertiary); margin-bottom: 4px;">
+                                Method</p>
+                            <p style="margin: 0; font-weight: 600; color: var(--text-primary);">Behavioral intelligence
+                                + B2B committee analysis</p>
+                        </div>
+                        <div>
+                            <p style="margin: 0; font-size: 14px; color: var(--text-tertiary); margin-bottom: 4px;">
+                                Accuracy</p>
+                            <p style="margin: 0; font-weight: 600; color: var(--text-primary);"><span
+                                    id="accuracyText">62% directional</span></p>
+                        </div>
+                        <div>
+                            <p style="margin: 0; font-size: 14px; color: var(--text-tertiary); margin-bottom: 4px;">
+                                Speed advantage</p>
+                            <p style="margin: 0; font-weight: 600; color: var(--success);">99.4% faster</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Variant Results with Committee Insights -->
+                <div class="variant-results">
+                    <!-- Control -->
+                    <div class="variant-card">
+                        <div class="variant-header">
+                            <h3 class="variant-title">🏠 Control: B2B Baseline Performance</h3>
+                        </div>
+                        <div style="margin-bottom: 16px;">
+                            <strong>Current conversion:</strong> 2.4% (B2B baseline)<br>
+                            <strong>Committee appeal:</strong> Mixed
+                        </div>
+                        <div style="background: var(--bg-accent); border-radius: 8px; padding: 16px; margin-top: 16px;">
+                            <strong style="color: var(--accent);">Committee Reactions:</strong>
+                            <ul style="list-style: none; margin-top: 8px; line-height: 1.8;">
+                                <li>• Champions: Like simplicity but want faster process</li>
+                                <li>• Guardians: Need more trust signals visible</li>
+                                <li>• Technical: Adequate information architecture</li>
+                                <li>• Economic: Clear pricing but no ROI tools</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Variant A -->
+                    <div class="variant-card loser">
+                        <div class="variant-header">
+                            <h3 class="variant-title">❌ Variant A: A/B Test Will LOSE</h3>
+                            <span class="variant-badge lose">-31% Predicted</span>
+                        </div>
+                        <div style="margin-bottom: 16px;">
+                            <strong>Predicted conversion:</strong> 1.7% (-29% vs control)<br>
+                            <strong>Committee verdict:</strong> <span style="color: var(--error);">Rejection across all
+                                stakeholders</span>
+                        </div>
+                        <div
+                            style="background: rgba(220, 53, 69, 0.1); border-radius: 8px; padding: 16px; margin-top: 16px;">
+                            <strong style="color: var(--error);">Committee Rejection Reasons:</strong>
+                            <ul style="list-style: none; margin-top: 8px; line-height: 1.8;">
+                                <li>❌ Champions: Abandon at 6-field form (mobile intolerance)</li>
+                                <li>❌ Economic Buyers: Frustrated by unclear value proposition</li>
+                                <li>❌ Technical Evaluators: Overwhelmed by excessive messaging</li>
+                                <li>❌ Guardians: Missing security badges = immediate exit</li>
+                            </ul>
+                        </div>
+                        <div
+                            style="margin-top: 16px; padding: 12px; background: rgba(220, 53, 69, 0.05); border-radius: 6px;">
+                            <strong>Fatal flaws:</strong> 6 fields exceed tolerance, 38px buttons fail mobile, missing
+                            trust signals<br>
+                            <strong style="color: var(--error);">RECOMMENDATION: DON'T TEST - Save $25K + 8
+                                weeks</strong>
+                        </div>
+                    </div>
+
+                    <!-- Variant B -->
+                    <div class="variant-card winner">
+                        <div class="variant-header">
+                            <h3 class="variant-title">✅ Variant B: A/B Test Will WIN</h3>
+                            <span class="variant-badge win">+25% Predicted</span>
+                        </div>
+                        <div style="margin-bottom: 16px;">
+                            <strong>Predicted conversion:</strong> 3.0% (+25% vs control)<br>
+                            <strong>Committee verdict:</strong> <span style="color: var(--success);">Alignment across
+                                all stakeholders</span>
+                        </div>
+                        <div
+                            style="background: rgba(34, 134, 58, 0.1); border-radius: 8px; padding: 16px; margin-top: 16px;">
+                            <strong style="color: var(--success);">Committee Success Factors:</strong>
+                            <ul style="list-style: none; margin-top: 8px; line-height: 1.8;">
+                                <li>✅ Champions: Love 3-field form + enhanced mobile UX</li>
+                                <li>✅ Economic Buyers: Trust enhanced security signals</li>
+                                <li>✅ Technical Evaluators: Appreciate streamlined information</li>
+                                <li>✅ Guardians: SOC2 badges above fold = instant trust</li>
+                            </ul>
+                        </div>
+                        <div
+                            style="margin-top: 16px; padding: 12px; background: rgba(34, 134, 58, 0.05); border-radius: 6px;">
+                            <strong>Success drivers:</strong> 3 fields within tolerance, 48px mobile buttons, prominent
+                            trust signals<br>
+                            <strong style="color: var(--success);">RECOMMENDATION: TEST THIS - 78% committee alignment
+                                confidence</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- B2B Buyer Insights Section (Outside of Funnel) -->
+                <div id="mainBuyerInsights"
+                    style="margin-top: 48px; padding: 32px; background: rgba(255, 255, 255, 0.5); border-radius: 12px; backdrop-filter: blur(10px); display: none;">
+                    <h3 style="font-size: 22px; margin-bottom: 24px;">🔍 Buyer Insights Unique to YOUR Business</h3>
+
+                    <div style="display: grid; gap: 24px;">
+                        <!-- C-Level Mobile Users -->
+                        <div
+                            style="background: var(--bg-accent); border-radius: 8px; padding: 20px; border-left: 4px solid var(--accent);">
+                            <h4 style="color: var(--accent); margin-bottom: 12px;">YOUR C-LEVEL MOBILE USERS (28% of
+                                traffic)</h4>
+                            <ul style="list-style: none; line-height: 1.8;">
+                                <li>• <strong>Form threshold:</strong> Exactly 3 fields maximum (not 4+ like industry)
+                                </li>
+                                <li>• <strong>Decision speed:</strong> 2.3 minutes average (faster than industry 4 min)
+                                </li>
+                                <li>• <strong>Mobile optimization:</strong> Need 48px+ buttons, thumb-friendly design
+                                </li>
+                                <li
+                                    style="margin-top: 8px; padding: 8px; background: rgba(139, 107, 71, 0.1); border-radius: 4px;">
+                                    <strong>📋 Recommendation:</strong> ≤3 fields, ≥48px buttons, <3min info
+                                        architecture </li>
+                            </ul>
+                        </div>
+
+                        <!-- Security Guardians -->
+                        <div
+                            style="background: var(--bg-accent); border-radius: 8px; padding: 20px; border-left: 4px solid var(--accent);">
+                            <h4 style="color: var(--accent); margin-bottom: 12px;">YOUR SECURITY GUARDIANS (24% of
+                                traffic)</h4>
+                            <ul style="list-style: none; line-height: 1.8;">
+                                <li>• <strong>Trust scan time:</strong> 15 seconds to find security signals</li>
+                                <li>• <strong>Compliance focus:</strong> SOC2 badges must be above fold</li>
+                                <li>• <strong>Validation behavior:</strong> Download security docs before conversion
+                                </li>
+                                <li
+                                    style="margin-top: 8px; padding: 8px; background: rgba(139, 107, 71, 0.1); border-radius: 4px;">
+                                    <strong>📋 Recommendation:</strong> SOC2 badges above fold, compliance docs
+                                    linked
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Technical Evaluators -->
+                        <div
+                            style="background: var(--bg-accent); border-radius: 8px; padding: 20px; border-left: 4px solid var(--accent);">
+                            <h4 style="color: var(--accent); margin-bottom: 12px;">YOUR TECHNICAL EVALUATORS (22% of
+                                traffic)</h4>
+                            <ul style="list-style: none; line-height: 1.8;">
+                                <li>• <strong>Research depth:</strong> 7+ minutes detailed evaluation (vs 4 min
+                                    industry)</li>
+                                <li>• <strong>Feature focus:</strong> Integration details critical for conversion</li>
+                                <li>• <strong>Decision factors:</strong> Technical depth more important than price</li>
+                                <li
+                                    style="margin-top: 8px; padding: 8px; background: rgba(139, 107, 71, 0.1); border-radius: 4px;">
+                                    <strong>📋 Recommendation:</strong> Provide integration details to increase
+                                    conversions
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Budget Holders -->
+                        <div
+                            style="background: var(--bg-accent); border-radius: 8px; padding: 20px; border-left: 4px solid var(--accent);">
+                            <h4 style="color: var(--accent); margin-bottom: 12px;">YOUR BUDGET HOLDERS (16% of traffic)
+                            </h4>
+                            <ul style="list-style: none; line-height: 1.8;">
+                                <li>• <strong>Price research:</strong> 4+ pricing page visits before conversion</li>
+                                <li>• <strong>ROI validation:</strong> Spend 67 seconds on ROI/calculator content</li>
+                                <li>• <strong>Comparison shopping:</strong> Check 2-3 competitor alternatives</li>
+                                <li
+                                    style="margin-top: 8px; padding: 8px; background: rgba(139, 107, 71, 0.1); border-radius: 4px;">
+                                    <strong>📋 Recommendation:</strong> Provide ROI calculator to increases conversions
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Consensus Builders -->
+                        <div
+                            style="background: var(--bg-accent); border-radius: 8px; padding: 20px; border-left: 4px solid var(--accent);">
+                            <h4 style="color: var(--accent); margin-bottom: 12px;">YOUR CONSENSUS BUILDERS (10% of
+                                traffic)</h4>
+                            <ul style="list-style: none; line-height: 1.8;">
+                                <li>• <strong>Multi-stakeholder:</strong> Show sharing/forwarding behavior</li>
+                                <li>• <strong>Extended research:</strong> 2-3 week evaluation cycles</li>
+                                <li>• <strong>Content needs:</strong> Require shareable resources for committee</li>
+                                <li
+                                    style="margin-top: 8px; padding: 8px; background: rgba(139, 107, 71, 0.1); border-radius: 4px;">
+                                    <strong>📋 Recommendation:</strong> Provide shareable content for committee
+                                    decisions
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Multi-Stage Funnel Results -->
+                <div class="funnel-visualization" id="funnelResults" style="display: none;">
+                    <h3 style="font-size: 24px; margin-bottom: 32px;">📊 Multi-Stage Funnel Results</h3>
+
+                    <!-- Funnel Breakdown Cards -->
+                    <div style="display: grid; gap: 24px; margin-bottom: 48px;">
+                        <!-- Control Funnel -->
+                        <div
+                            style="background: rgba(255, 255, 255, 0.5); border-radius: 12px; padding: 24px; border: 2px solid var(--border);">
+                            <h4 style="font-size: 18px; margin-bottom: 20px;">🏠 CONTROL: Multi-Stage Baseline
+                                Performance</h4>
+                            <div style="display: grid; gap: 12px;">
+                                <div
+                                    style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border);">
+                                    <span>Landing → Demo</span>
+                                    <span style="font-weight: 600;">18% conversion</span>
+                                    <span style="color: var(--text-secondary);">(adequate B2B performance)</span>
+                                </div>
+                                <div
+                                    style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border);">
+                                    <span>Demo → Trial</span>
+                                    <span style="font-weight: 600;">34% conversion</span>
+                                    <span style="color: var(--text-secondary);">(good demo-to-trial rate)</span>
+                                </div>
+                                <div
+                                    style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border);">
+                                    <span>Trial → Paid</span>
+                                    <span style="font-weight: 600;">22% conversion</span>
+                                    <span style="color: var(--text-secondary);">(standard B2B trial conversion)</span>
+                                </div>
+                                <div
+                                    style="margin-top: 16px; padding: 12px; background: var(--bg-accent); border-radius: 6px; text-align: center;">
+                                    <strong>Overall funnel:</strong> <span
+                                        style="font-size: 20px; color: var(--text-primary);">1.3%</span> end-to-end
+                                    conversion
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Variant A Funnel -->
+                        <div
+                            style="background: rgba(220, 53, 69, 0.05); border-radius: 12px; padding: 24px; border: 2px solid rgba(220, 53, 69, 0.3);">
+                            <h4 style="font-size: 18px; margin-bottom: 20px; color: var(--error);">❌ VARIANT A:
+                                Multi-Stage DISASTER (-64% funnel conversion)</h4>
+                            <div style="display: grid; gap: 12px;">
+                                <div
+                                    style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(220, 53, 69, 0.2);">
+                                    <span>Landing → Demo</span>
+                                    <span style="font-weight: 600; color: var(--error);">10% conversion (-44%)</span>
+                                    <span style="color: var(--text-secondary);">(committee friction)</span>
+                                </div>
+                                <div
+                                    style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(220, 53, 69, 0.2);">
+                                    <span>Demo → Trial</span>
+                                    <span style="font-weight: 600; color: var(--error);">28% conversion (-18%)</span>
+                                    <span style="color: var(--text-secondary);">(continued complexity)</span>
+                                </div>
+                                <div
+                                    style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(220, 53, 69, 0.2);">
+                                    <span>Trial → Paid</span>
+                                    <span style="font-weight: 600; color: var(--error);">16% conversion (-27%)</span>
+                                    <span style="color: var(--text-secondary);">(onboarding friction)</span>
+                                </div>
+                                <div
+                                    style="margin-top: 16px; padding: 12px; background: rgba(220, 53, 69, 0.1); border-radius: 6px; text-align: center;">
+                                    <strong>Overall funnel:</strong> <span
+                                        style="font-size: 20px; color: var(--error);">0.45%</span> (-64% vs control)
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Variant B Funnel -->
+                        <div
+                            style="background: rgba(34, 134, 58, 0.05); border-radius: 12px; padding: 24px; border: 2px solid rgba(34, 134, 58, 0.3);">
+                            <h4 style="font-size: 18px; margin-bottom: 20px; color: var(--success);">✅ VARIANT B:
+                                Multi-Stage SUCCESS (+108% funnel conversion)</h4>
+                            <div style="display: grid; gap: 12px;">
+                                <div
+                                    style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(34, 134, 58, 0.2);">
+                                    <span>Landing → Demo</span>
+                                    <span style="font-weight: 600; color: var(--success);">27% conversion (+50%)</span>
+                                    <span style="color: var(--text-secondary);">(committee enthusiasm)</span>
+                                </div>
+                                <div
+                                    style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(34, 134, 58, 0.2);">
+                                    <span>Demo → Trial</span>
+                                    <span style="font-weight: 600; color: var(--success);">43% conversion (+26%)</span>
+                                    <span style="color: var(--text-secondary);">(increased trust)</span>
+                                </div>
+                                <div
+                                    style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(34, 134, 58, 0.2);">
+                                    <span>Trial → Paid</span>
+                                    <span style="font-weight: 600; color: var(--success);">29% conversion (+32%)</span>
+                                    <span style="color: var(--text-secondary);">(smoother onboarding)</span>
+                                </div>
+                                <div
+                                    style="margin-top: 16px; padding: 12px; background: rgba(34, 134, 58, 0.1); border-radius: 6px; text-align: center;">
+                                    <strong>Overall funnel:</strong> <span
+                                        style="font-size: 20px; color: var(--success);">2.7%</span> (+108% vs control)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- B2B Buyer Insights Section (Outside of Funnel) -->
+                <div id="mainBuyerInsights"
+                    style="margin-top: 48px; padding: 32px; background: rgba(255, 255, 255, 0.5); border-radius: 12px; backdrop-filter: blur(10px); display: none;">
+                    <h3 style="font-size: 22px; margin-bottom: 24px;">🔍 Buyer Insights Unique to YOUR Business</h3>
+
+                    <div style="display: grid; gap: 24px;">
+                        <!-- C-Level Mobile Users -->
+                        <div
+                            style="background: var(--bg-accent); border-radius: 8px; padding: 20px; border-left: 4px solid var(--accent);">
+                            <h4 style="color: var(--accent); margin-bottom: 12px;">YOUR C-LEVEL MOBILE USERS (28% of
+                                traffic)</h4>
+                            <ul style="list-style: none; line-height: 1.8;">
+                                <li>• <strong>Form threshold:</strong> Exactly 3 fields maximum (not 4+ like industry)
+                                </li>
+                                <li>• <strong>Decision speed:</strong> 2.3 minutes average (faster than industry 4 min)
+                                </li>
+                                <li>• <strong>Mobile optimization:</strong> Need 48px+ buttons, thumb-friendly design
+                                </li>
+                                <li>• <strong>Unique finding:</strong> <em>"YOUR C-level users abandon faster than
+                                        industry avg"</em></li>
+                                <li
+                                    style="margin-top: 8px; padding: 8px; background: rgba(139, 107, 71, 0.1); border-radius: 4px;">
+                                    <strong>📋 Optimization rule:</strong> ≤3 fields, ≥48px buttons, <3min info
+                                        architecture </li>
+                            </ul>
+                        </div>
+
+                        <!-- Security Guardians -->
+                        <div
+                            style="background: var(--bg-accent); border-radius: 8px; padding: 20px; border-left: 4px solid var(--accent);">
+                            <h4 style="color: var(--accent); margin-bottom: 12px;">YOUR SECURITY GUARDIANS (24% of
+                                traffic)</h4>
+                            <ul style="list-style: none; line-height: 1.8;">
+                                <li>• <strong>Trust scan time:</strong> 15 seconds to find security signals</li>
+                                <li>• <strong>Compliance focus:</strong> SOC2 badges must be above fold</li>
+                                <li>• <strong>Validation behavior:</strong> Download security docs before conversion
+                                </li>
+                                <li>• <strong>Unique finding:</strong> <em>"YOUR buyers more security-sensitive than
+                                        average"</em></li>
+                                <li
+                                    style="margin-top: 8px; padding: 8px; background: rgba(139, 107, 71, 0.1); border-radius: 4px;">
+                                    <strong>📋 Optimization rule:</strong> SOC2 badges above fold, compliance docs
+                                    linked
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Technical Evaluators -->
+                        <div
+                            style="background: var(--bg-accent); border-radius: 8px; padding: 20px; border-left: 4px solid var(--accent);">
+                            <h4 style="color: var(--accent); margin-bottom: 12px;">YOUR TECHNICAL EVALUATORS (22% of
+                                traffic)</h4>
+                            <ul style="list-style: none; line-height: 1.8;">
+                                <li>• <strong>Research depth:</strong> 7+ minutes detailed evaluation (vs 4 min
+                                    industry)</li>
+                                <li>• <strong>Feature focus:</strong> Integration details critical for conversion</li>
+                                <li>• <strong>Decision factors:</strong> Technical depth more important than price</li>
+                                <li>• <strong>Unique finding:</strong> <em>"YOUR technical buyers need more detail than
+                                        typical"</em></li>
+                                <li
+                                    style="margin-top: 8px; padding: 8px; background: rgba(139, 107, 71, 0.1); border-radius: 4px;">
+                                    <strong>📋 Optimization rule:</strong> Integration details increase conversion 34%
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Budget Holders -->
+                        <div
+                            style="background: var(--bg-accent); border-radius: 8px; padding: 20px; border-left: 4px solid var(--accent);">
+                            <h4 style="color: var(--accent); margin-bottom: 12px;">YOUR BUDGET HOLDERS (16% of traffic)
+                            </h4>
+                            <ul style="list-style: none; line-height: 1.8;">
+                                <li>• <strong>Price research:</strong> 4+ pricing page visits before conversion</li>
+                                <li>• <strong>ROI validation:</strong> Spend 67 seconds on ROI/calculator content</li>
+                                <li>• <strong>Comparison shopping:</strong> Check 2-3 competitor alternatives</li>
+                                <li>• <strong>Unique finding:</strong> <em>"YOUR budget holders more price-sensitive
+                                        than avg"</em></li>
+                                <li
+                                    style="margin-top: 8px; padding: 8px; background: rgba(139, 107, 71, 0.1); border-radius: 4px;">
+                                    <strong>📋 Optimization rule:</strong> ROI calculator increases conversion 28%
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Consensus Builders -->
+                        <div
+                            style="background: var(--bg-accent); border-radius: 8px; padding: 20px; border-left: 4px solid var(--accent);">
+                            <h4 style="color: var(--accent); margin-bottom: 12px;">YOUR CONSENSUS BUILDERS (10% of
+                                traffic)</h4>
+                            <ul style="list-style: none; line-height: 1.8;">
+                                <li>• <strong>Multi-stakeholder:</strong> Show sharing/forwarding behavior</li>
+                                <li>• <strong>Extended research:</strong> 2-3 week evaluation cycles</li>
+                                <li>• <strong>Content needs:</strong> Require shareable resources for committee</li>
+                                <li>• <strong>Unique finding:</strong> <em>"YOUR consensus builders coordinate 3+
+                                        stakeholders"</em></li>
+                                <li
+                                    style="margin-top: 8px; padding: 8px; background: rgba(139, 107, 71, 0.1); border-radius: 4px;">
+                                    <strong>📋 Optimization rule:</strong> Provide shareable content for committee
+                                    decisions
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+        <div class="container">
+            <div class="features-header fade-in">
+                <h2>How It Works</h2>
+                <p>Behavioral intelligence meets B2B buying psychology</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature fade-in">
+                    <div class="feature-icon">🧬</div>
+                    <h3 class="feature-title">Behavioral Twin Personas</h3>
+                    <p class="feature-description">Creates AI twins of your actual visitors from GA4 data. Each persona
+                        mirrors real user behavior patterns.</p>
+                </div>
+
+                <div class="feature fade-in">
+                    <div class="feature-icon">🏢</div>
+                    <h3 class="feature-title">Buying Committee Simulation</h3>
+                    <p class="feature-description">Models how Champions, Economic Buyers, and Security Guardians each
+                        evaluate your variants.</p>
+                </div>
+
+                <div class="feature fade-in">
+                    <div class="feature-icon">🔗</div>
+                    <h3 class="feature-title">Multi-Stage Funnels</h3>
+                    <p class="feature-description">Tracks complete buyer journeys, not just single pages. Finds compound
+                        effects across your funnel.</p>
+                </div>
+
+                <div class="feature fade-in">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">1-Hour Predictions</h3>
+                    <p class="feature-description">No traffic needed. AI simulates thousands of user sessions in
+                        minutes, not months.</p>
+                </div>
+
+                <div class="feature fade-in">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Small Traffic Intelligence</h3>
+                    <p class="feature-description">Works with B2B volumes. Get insights from 500+ visitors, not 50,000.
+                    </p>
+                </div>
+
+                <div class="feature fade-in">
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">80% Accuracy</h3>
+                    <p class="feature-description">Validated on 12,000+ tests. Improves with your data over time.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Waitlist Section -->
+    <section class="waitlist-section" id="waitlist">
+        <div class="container">
+            <div class="waitlist-container">
+                <div class="waitlist-header fade-in">
+                    <h2>Join the Early Access</h2>
+                    <p>Start predicting A/B tests in hours</p>
+                </div>
+
+                <div class="waitlist-form fade-in">
+                    <form id="waitlistForm" onsubmit="submitWaitlist(event)">
+                        <div class="form-group">
+                            <input type="email" placeholder="Work email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" placeholder="Company name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" placeholder="Job Title" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea placeholder="What's your biggest A/B testing challenge?" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-button">Request Early Access</button>
+                    </form>
+                    <p class="privacy-note">We'll only email about WhyUser updates. No spam.</p>
+                </div>
+
+                <div class="success-checkmark" id="successMessage">
+                    <svg viewBox="0 0 52 52">
+                        <circle class="circle" cx="26" cy="26" r="25" fill="none" />
+                        <path class="check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                    </svg>
+                    <p style="color: var(--success); font-weight: 600;">Thank you! We'll be in touch soon.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>WhyUser</h4>
+                    <p style="margin-top: 12px; line-height: 1.6;">Predict A/B test outcomes in hours using behavioral
+                        intelligence. Stop wasting money on tests that will fail.</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="#predictor">Test Predictor</a></li>
+                        <li><a href="#features">How It Works</a></li>
+                        <li><a href="#">Case Studies</a></li>
+                        <li><a href="#">Documentation</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Security</a></li>
+                        <li><a href="#">GDPR</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 WhyUser. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        mobileMenuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    navLinks.classList.remove('open');
+                }
+            });
+        });
+
+        // Intersection observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Calculator functionality
+        function calculateROI() {
+            const results = document.getElementById('calculatorResults');
+            const tests = parseInt(document.getElementById('tests').value) || 3;
+            const failRate = 0.67; // Industry average
+
+            const yearlyTests = tests * 4;
+            const failedTests = Math.round(yearlyTests * failRate);
+            const testCost = 25000;
+            const wasteCost = failedTests * testCost;
+            const timeWasted = failedTests * 8;
+            const neuralSavings = wasteCost * 0.7;
+            const neuralROI = Math.round(neuralSavings / 6000); // Assuming $500/month
+
+            document.getElementById('failedTests').textContent = `${failedTests} out of ${yearlyTests}`;
+            document.getElementById('wasteCost').textContent = `$${wasteCost.toLocaleString()}`;
+            document.getElementById('timeWasted').textContent = `${timeWasted} weeks`;
+            document.getElementById('neuralSavings').textContent = `$${Math.round(neuralSavings).toLocaleString()} + ${Math.round(timeWasted * 0.875)} weeks`;
+            document.getElementById('neuralROI').textContent = `${neuralROI}x`;
+
+            results.classList.add('show');
+        }
+
+        // Add variant functionality
+        let variantCount = 1;
+        function addVariant() {
+            variantCount++;
+            const variantsContainer = document.getElementById('additionalVariants');
+            const newVariant = document.createElement('div');
+            newVariant.className = 'url-input';
+            newVariant.innerHTML = `
+                <input type="url" placeholder="https://yoursite.com/pricing-v${variantCount + 1}" id="variant${variantCount}">
+                <span class="url-status valid">✓ Valid</span>
+            `;
+            variantsContainer.appendChild(newVariant);
+        }
+
+        // Toggle funnel
+        function toggleFunnel() {
+            const funnelSteps = document.getElementById('funnelSteps');
+            const checkbox = document.getElementById('enableFunnel');
+
+            if (checkbox.checked) {
+                funnelSteps.classList.add('show');
+            } else {
+                funnelSteps.classList.remove('show');
+            }
+        }
+
+        // Handle accuracy selection
+        document.getElementById('defaultPersonas').addEventListener('change', function () {
+            document.getElementById('ga4Connect').style.display = 'none';
+        });
+
+        document.getElementById('ga4Personas').addEventListener('change', function () {
+            document.getElementById('ga4Connect').style.display = 'block';
+        });
+
+        // GA4 Connection
+        let useGA4 = false;
+        function connectGA4() {
+            // Simulate OAuth flow
+            const button = event.target;
+            button.innerHTML = 'Connecting...';
+            button.disabled = true;
+
+            setTimeout(() => {
+                button.innerHTML = '✓ Connected to GA4';
+                button.style.background = 'rgba(34, 134, 58, 0.1)';
+                button.style.color = 'var(--success)';
+                useGA4 = true;
+            }, 2000);
+        }
+
+        // Start prediction
+        function startPrediction() {
+            const predictorForm = document.getElementById('predictorForm');
+            const analysisSection = document.getElementById('analysisSection');
+            const personasDisplay = document.getElementById('personasDisplay');
+            const personasGrid = document.getElementById('personasGrid');
+            const personasSubtitle = document.getElementById('personasSubtitle');
+
+            // Hide form
+            predictorForm.style.display = 'none';
+
+            // Show analysis section with personas
+            analysisSection.classList.add('show');
+            personasDisplay.style.display = 'block';
+            analysisSection.scrollIntoView({ behavior: 'smooth' });
+
+            // Generate personas based on selection
+            if (document.getElementById('ga4Personas').checked && useGA4) {
+                personasSubtitle.textContent = 'Generated from YOUR GA4 data • 80% prediction accuracy';
+                displayGA4Personas();
+            } else {
+                personasSubtitle.textContent = 'Generated from industry patterns • 62% prediction accuracy';
+                displayDefaultPersonas();
+            }
+        }
+
+        function displayDefaultPersonas() {
+            const personasGrid = document.getElementById('personasGrid');
+            personasGrid.innerHTML = `
+                <div class="persona-card">
+                    <div class="persona-icon">⚡</div>
+                    <div class="persona-name">Lightning Evaluators</div>
+                    <div class="persona-role">Quick Decision Makers</div>
+                    <div class="persona-traffic">22%</div>
+                    <div class="persona-label">of B2B traffic</div>
+                    <ul class="persona-traits">
+                        <li>Mobile-first executives</li>
+                        <li>3-minute evaluation time</li>
+                        <li>Maximum 3 form fields</li>
+                        <li>Need immediate value proof</li>
+                    </ul>
+                </div>
+                
+                <div class="persona-card">
+                    <div class="persona-icon">🔒</div>
+                    <div class="persona-name">Security Guardians</div>
+                    <div class="persona-role">Compliance Champions</div>
+                    <div class="persona-traffic">18%</div>
+                    <div class="persona-label">of B2B traffic</div>
+                    <ul class="persona-traits">
+                        <li>Security-first evaluation</li>
+                        <li>Need SOC2/compliance badges</li>
+                        <li>Deep documentation review</li>
+                        <li>Trust signals critical</li>
+                    </ul>
+                </div>
+                
+                <div class="persona-card">
+                    <div class="persona-icon">⚙️</div>
+                    <div class="persona-name">Technical Validators</div>
+                    <div class="persona-role">Integration Experts</div>
+                    <div class="persona-traffic">16%</div>
+                    <div class="persona-label">of B2B traffic</div>
+                    <ul class="persona-traits">
+                        <li>API documentation focus</li>
+                        <li>7+ minute deep dive</li>
+                        <li>Integration complexity check</li>
+                        <li>Technical depth required</li>
+                    </ul>
+                </div>
+                
+                <div class="persona-card">
+                    <div class="persona-icon">💰</div>
+                    <div class="persona-name">Economic Buyers</div>
+                    <div class="persona-role">Budget Controllers</div>
+                    <div class="persona-traffic">14%</div>
+                    <div class="persona-label">of B2B traffic</div>
+                    <ul class="persona-traits">
+                        <li>ROI calculator usage</li>
+                        <li>4+ pricing page visits</li>
+                        <li>Comparison shopping</li>
+                        <li>Value validation focus</li>
+                    </ul>
+                </div>
+                
+                <div class="persona-card">
+                    <div class="persona-icon">🔍</div>
+                    <div class="persona-name">Research Mode</div>
+                    <div class="persona-role">Deep Investigators</div>
+                    <div class="persona-traffic">12%</div>
+                    <div class="persona-label">of B2B traffic</div>
+                    <ul class="persona-traits">
+                        <li>Multiple session research</li>
+                        <li>Comprehensive evaluation</li>
+                        <li>Feature comparison focus</li>
+                        <li>Extended decision timeline</li>
+                    </ul>
+                </div>
+                
+                <div class="persona-card">
+                    <div class="persona-icon">👥</div>
+                    <div class="persona-name">Consensus Builders</div>
+                    <div class="persona-role">Team Coordinators</div>
+                    <div class="persona-traffic">10%</div>
+                    <div class="persona-label">of B2B traffic</div>
+                    <ul class="persona-traits">
+                        <li>Multi-stakeholder process</li>
+                        <li>Shareable resources needed</li>
+                        <li>Cross-device behavior</li>
+                        <li>Committee approval focus</li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        function displayGA4Personas() {
+            const personasGrid = document.getElementById('personasGrid');
+            personasGrid.innerHTML = `
+                <div class="persona-card">
+                    <div class="persona-icon">👔</div>
+                    <div class="persona-name">YOUR C-Level Mobile</div>
+                    <div class="persona-role">Executive Decision Makers</div>
+                    <div class="persona-traffic">28%</div>
+                    <div class="persona-label">of YOUR traffic</div>
+                    <ul class="persona-traits">
+                        <li>82% mobile-only usage</li>
+                        <li>2.3 min evaluation (faster than avg)</li>
+                        <li>Abandon at field #4</li>
+                        <li>Security badges required</li>
+                    </ul>
+                </div>
+                
+                <div class="persona-card">
+                    <div class="persona-icon">🛡️</div>
+                    <div class="persona-name">YOUR Security Focused</div>
+                    <div class="persona-role">Compliance Guardians</div>
+                    <div class="persona-traffic">24%</div>
+                    <div class="persona-label">of YOUR traffic</div>
+                    <ul class="persona-traits">
+                        <li>15-second security scan</li>
+                        <li>SOC2 must be above fold</li>
+                        <li>Download compliance docs</li>
+                        <li>More sensitive than average</li>
+                    </ul>
+                </div>
+                
+                <div class="persona-card">
+                    <div class="persona-icon">🔧</div>
+                    <div class="persona-name">YOUR Tech Evaluators</div>
+                    <div class="persona-role">Integration Validators</div>
+                    <div class="persona-traffic">22%</div>
+                    <div class="persona-label">of YOUR traffic</div>
+                    <ul class="persona-traits">
+                        <li>7+ min evaluation (vs 4 avg)</li>
+                        <li>Integration details critical</li>
+                        <li>Technical > price focus</li>
+                        <li>Need more detail than typical</li>
+                    </ul>
+                </div>
+                
+                <div class="persona-card">
+                    <div class="persona-icon">💵</div>
+                    <div class="persona-name">YOUR Budget Holders</div>
+                    <div class="persona-role">Economic Decision Makers</div>
+                    <div class="persona-traffic">16%</div>
+                    <div class="persona-label">of YOUR traffic</div>
+                    <ul class="persona-traits">
+                        <li>4+ pricing page visits</li>
+                        <li>67 sec on ROI content</li>
+                        <li>Check 2-3 competitors</li>
+                        <li>More price-sensitive than avg</li>
+                    </ul>
+                </div>
+                
+                <div class="persona-card">
+                    <div class="persona-icon">🤝</div>
+                    <div class="persona-name">YOUR Consensus Team</div>
+                    <div class="persona-role">Multi-Stakeholder Coordinators</div>
+                    <div class="persona-traffic">10%</div>
+                    <div class="persona-label">of YOUR traffic</div>
+                    <ul class="persona-traits">
+                        <li>Coordinate 3+ stakeholders</li>
+                        <li>2-3 week evaluation cycle</li>
+                        <li>Share/forward content</li>
+                        <li>Committee decision process</li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        // Start simulation (after personas display)
+        function startSimulation() {
+            const personasDisplay = document.getElementById('personasDisplay');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressFill = document.getElementById('progressFill');
+            const simulationLog = document.getElementById('simulationLog');
+
+            // Hide personas, show progress
+            personasDisplay.style.display = 'none';
+            progressContainer.style.display = 'block';
+
+            // Clear previous log entries
+            simulationLog.innerHTML = '<div class="log-entry"><span class="log-time">00:00</span><span class="log-action">Starting analysis of test variants...</span></div>';
+
+            // Simulate progress
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 100) progress = 100;
+
+                progressFill.style.width = progress + '%';
+
+                // Add simulation log entries
+                if (progress > 20 && simulationLog.children.length === 1) {
+                    addLogEntry('00:15', 'Analyzing page structures and forms...');
+                }
+                if (progress > 40 && simulationLog.children.length === 2) {
+                    addLogEntry('00:32', useGA4 ? 'Simulating YOUR C-Level Mobile personas...' : 'Simulating Lightning Evaluator personas...');
+                }
+                if (progress > 60 && simulationLog.children.length === 3) {
+                    addLogEntry('00:48', useGA4 ? 'Testing YOUR Security Guardian behavior...' : 'Testing Security Guardian behavior...');
+                    addLogEntry('00:52', 'Guardian abandoned Variant A at form field #4', true);
+                }
+                if (progress > 80 && simulationLog.children.length === 5) {
+                    addLogEntry('01:15', 'Analyzing committee consensus patterns...');
+                }
+
+                if (progress >= 100) {
+                    clearInterval(progressInterval);
+                    addLogEntry('01:47', 'Analysis complete. Generating predictions...');
+                    setTimeout(showResults, 2000);
+                }
+            }, 500);
+        }
+
+        function addLogEntry(time, action, isError = false) {
+            const log = document.getElementById('simulationLog');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.innerHTML = `
+                <span class="log-time">${time}</span>
+                <span class="log-action ${isError ? 'log-error' : ''}">${action}</span>
+            `;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        function showResults() {
+            const analysisSection = document.getElementById('analysisSection');
+            const resultsSection = document.getElementById('resultsSection');
+            const funnelResults = document.getElementById('funnelResults');
+            const mainBuyerInsights = document.getElementById('mainBuyerInsights');
+            const accuracyText = document.getElementById('accuracyText');
+            const winConfidence = document.getElementById('winConfidence');
+
+            // Hide analysis
+            analysisSection.style.display = 'none';
+
+            // Show results
+            resultsSection.classList.add('show');
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+
+            // Set accuracy text based on selection
+            if (document.getElementById('ga4Personas').checked && useGA4) {
+                accuracyText.textContent = '80% accuracy with YOUR data';
+                winConfidence.textContent = '89%';
+                // Show buyer insights when using GA4 data
+                if (mainBuyerInsights) {
+                    mainBuyerInsights.style.display = 'block';
+                }
+            } else {
+                if (document.getElementById('enableFunnel').checked) {
+                    accuracyText.textContent = '62% directional (73% with funnel config)';
+                    winConfidence.textContent = '82%';
+                } else {
+                    accuracyText.textContent = '62% directional';
+                    winConfidence.textContent = '78%';
+                }
+                // Hide buyer insights when using industry personas
+                if (mainBuyerInsights) {
+                    mainBuyerInsights.style.display = 'none';
+                }
+            }
+
+            // Show funnel results if enabled
+            if (document.getElementById('enableFunnel').checked) {
+                funnelResults.style.display = 'block';
+            }
+        }
+
+        // Waitlist submission
+        function submitWaitlist(event) {
+            event.preventDefault();
+            const form = document.getElementById('waitlistForm');
+            const successMessage = document.getElementById('successMessage');
+
+            // Simulate submission
+            form.style.display = 'none';
+            successMessage.classList.add('show');
+        }
+    </script>
+</body>
+
+</html>
