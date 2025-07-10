@@ -75,19 +75,17 @@
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            gap: 2px;
+            gap: 4px;
         }
 
-        .logo {
-            font-size: 24px;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            color: var(--text-primary);
-            text-decoration: none;
+        .logo-image {
+            height: 48px;
+            width: auto;
+            display: block;
             transition: opacity 0.3s ease;
         }
 
-        .logo:hover {
+        .logo:hover .logo-image {
             opacity: 0.7;
         }
 
@@ -1361,8 +1359,10 @@
         <div class="container">
             <nav>
                 <div class="logo-container">
-                    <a href="#" class="logo">WhyUser</a>
-                    <span class="tagline">Predict Before You Test</span>
+                    <a href="#" class="logo">
+                        <img src="images/logo1.png" alt="WhyUser" class="logo-image">
+                    </a>
+                    <span class="tagline">Behavioral OS for Business</span>
                 </div>
                 <ul class="nav-links" id="navLinks">
                     <li><a href="#how-it-works">How It Works</a></li>
@@ -1677,20 +1677,20 @@
     </div>
 
     <!-- Testimonial -->
-    <section class="testimonial">
+    <!-- <section class="testimonial">
         <div class="container fade-in">
             <p class="quote">"WhyUser predicted our checkout redesign would fail by 31%. We tested anyway to validate — lost by 28%."</p>
             <p class="quote-author">— Sarah Chen, VP Growth, TechFlow ($23M ARR)</p>
             <div class="quote-impact">What we saved: $25K dev cost + 6 weeks + team confidence</div>
         </div>
-    </section>
+    </section> -->
 
     <!-- Features Section -->
     <section class="features-section" id="features">
         <div class="container">
             <div class="features-header fade-in">
                 <h2>Behavioral Intelligence for B2B</h2>
-                <p>Built specifically for complex B2B buying journeys</p>
+                <p>Built to support complex B2B buying journeys</p>
             </div>
 
             <div class="features-grid">
@@ -1794,7 +1794,7 @@
                 <div class="footer-section">
                     <h4>Company</h4>
                     <ul>
-                        <li><a href="#">About</a></li>
+                        <li><a href="about.html">About</a></li>
                         <li><a href="#">Blog</a></li>
                         <li><a href="#">Case Studies</a></li>
                         <li><a href="#">Contact</a></li>
@@ -1807,7 +1807,6 @@
                         <li><a href="#">Privacy Policy</a></li>
                         <li><a href="#">Terms of Service</a></li>
                         <li><a href="#">Security</a></li>
-                        <li><a href="#">SOC2 Compliance</a></li>
                     </ul>
                 </div>
             </div>

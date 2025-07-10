@@ -75,19 +75,17 @@
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            gap: 2px;
+            gap: 4px;
         }
 
-        .logo {
-            font-size: 24px;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            color: var(--text-primary);
-            text-decoration: none;
+        .logo-image {
+            height: 48px;
+            width: auto;
+            display: block;
             transition: opacity 0.3s ease;
         }
 
-        .logo:hover {
+        .logo:hover .logo-image {
             opacity: 0.7;
         }
 
@@ -1784,8 +1782,10 @@
         <div class="container">
             <nav>
                 <div class="logo-container">
-                    <a href="#" class="logo">WhyUser</a>
-                    <span class="tagline">Predict Before You Test</span>
+                    <a href="#" class="logo">
+                        <img src="images/logo1.png" alt="WhyUser" class="logo-image">
+                    </a>
+                    <span class="tagline">Behavioral OS for Business</span>
                 </div>
                 <ul class="nav-links" id="navLinks">
                     <li><a href="#predictor">Predict Tests</a></li>
@@ -2032,7 +2032,7 @@
                                     </svg>
                                     Connect Google Analytics
                                 </button>
-                                <p class="ga4-security">Read-only access • SOC2 compliant • Auto-deleted after analysis
+                                <p class="ga4-security">Read-only access • Auto-deleted after analysis
                                 </p>
                             </div>
                         </div>
@@ -2112,14 +2112,14 @@
     </section>
 
     <!-- Testimonial -->
-    <section class="testimonial">
+    <!-- <section class="testimonial">
         <div class="container fade-in">
             <p class="quote">"WhyUser predicted our checkout redesign would fail by 31%. We tested anyway to validate —
                 lost by 28%."</p>
             <p class="quote-author">— Sarah Chen, VP Growth, TechFlow ($23M ARR)</p>
             <div class="quote-impact">Total value: $25K saved + $43K gained = $68K impact</div>
         </div>
-    </section>
+    </section> -->
 
     <!-- Analysis Progress Section -->
     <section class="analysis-section" id="analysisSection">
