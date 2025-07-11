@@ -724,7 +724,7 @@
             align-items: center;
             gap: 12px;
             font-size: 16px;
-            justify-content: flex-start;
+            justify-content: left;
         }
 
         .check {
@@ -2348,18 +2348,76 @@
                                 <div class="slider-value" id="costValue">$15,000</div>
                             </div>
                         </div>
-    
-                        <div class="input-group optional">
-                            <label for="monthlyTraffic">
-                                Monthly website traffic (optional)
-                                <span class="optional-badge">Optional</span>
-                            </label>
-                            <div class="traffic-input-container">
-                                <input type="number" id="monthlyTraffic" placeholder="e.g., 2500" min="100"
-                                    class="traffic-input">
-                                <span class="traffic-label">visitors/month</span>
+                        <!-- ADD THIS - Statistical Power Check Section -->
+                        <div class="input-group optional" style="margin-top: 32px;">
+                            <h4 style="margin: 0 0 20px 0; font-size: 16px; font-weight: 600; color: var(--text-primary);">
+                                Statistical Power Check
+                                <span class="optional-badge">Optional but Revealing</span>
+                            </h4>
+                            <p style="margin-bottom: 24px; font-size: 14px; color: var(--text-secondary); line-height: 1.5;">
+                                See if you can even reach statistical significance with your traffic levels
+                            </p>
+
+                            <!-- Monthly Traffic -->
+                            <div style="margin-bottom: 20px;">
+                                <label for="monthlyTraffic">
+                                    Total monthly website traffic
+                                    <span class="tooltip"
+                                        data-tooltip="Your TOTAL site traffic (we'll split it across variants automatically)">?</span>
+                                </label>
+                                <div class="traffic-input-container">
+                                    <input type="number" id="monthlyTraffic" placeholder="e.g., 10000" min="100" class="traffic-input">
+                                    <span class="traffic-label">total visitors/month</span>
+                                </div>
                             </div>
-                            <p class="input-help">Adding traffic shows if you can even reach statistical significance</p>
+
+                            <!-- Number of Variants -->
+                            <div style="margin-bottom: 20px;">
+                                <label for="variantCount">
+                                    Variants per test (including control)
+                                    <span class="tooltip" data-tooltip="A/B = 2 variants, A/B/C = 3 variants, etc.">?</span>
+                                </label>
+                                <div class="slider-container">
+                                    <input type="range" id="variantCount" min="2" max="5" value="2" class="slider"
+                                        oninput="updateVariantDisplay()">
+                                    <div class="slider-value" id="variantValue">2 (A/B)</div>
+                                </div>
+                                <p class="input-help" id="trafficSplit" style="display: none;">
+                                    = <span id="perVariantTraffic">-</span> visitors per variant
+                                </p>
+                            </div>
+
+                            <!-- MDE -->
+                            <div style="margin-bottom: 20px;">
+                                <label for="mdeValue">
+                                    Minimum lift worth implementing
+                                    <span class="tooltip"
+                                        data-tooltip="The smallest improvement that justifies engineering work. Most B2B teams need 20-30% lift.">?</span>
+                                </label>
+                                <div class="slider-container">
+                                    <input type="range" id="mdeValue" min="5" max="50" value="25" step="5" class="slider"
+                                        oninput="document.getElementById('mdeDisplay').textContent = this.value + '%'">
+                                    <div class="slider-value" id="mdeDisplay">25%</div>
+                                </div>
+                            </div>
+
+                            <!-- Baseline Conversion -->
+                            <div>
+                                <label for="baselineConversion">
+                                    Current conversion rate
+                                    <span class="tooltip" data-tooltip="Your baseline conversion rate for the metric you're optimizing">?</span>
+                                </label>
+                                <div class="slider-container">
+                                    <input type="range" id="baselineConversion" min="0.5" max="10" value="3" step="0.5" class="slider"
+                                        oninput="document.getElementById('conversionDisplay').textContent = this.value + '%'">
+                                    <div class="slider-value" id="conversionDisplay">3%</div>
+                                </div>
+                            </div>
+
+                            <p
+                                style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 13px; color: var(--text-tertiary); font-style: italic;">
+                                💡 This doesn't change your waste calculation - it reveals if you're making decisions on statistical noise
+                            </p>
                         </div>
     
                         <button class="calculate-button" onclick="calculateWaste()">
@@ -2374,31 +2432,107 @@
                             <h3>Annual A/B Testing Waste</h3>
                             <div class="waste-amount" id="totalWaste">$252,000</div>
                         </div>
-                
-                        <!-- Key Metrics -->
-                        <div class="key-metrics">
+                    
+                        <!-- Enhanced Key Metrics with Velocity -->
+                        <div class="key-metrics" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
+                            <!-- Row 1: Current State -->
                             <div class="metric-card failure">
                                 <div class="metric-value" id="failureCount">8 of 12</div>
-                                <div class="metric-label">Tests Fail</div>
+                                <div class="metric-label">Tests Fail Annually</div>
                             </div>
                             <div class="metric-card time">
                                 <div class="metric-value" id="timeWasted">64 weeks</div>
-                                <div class="metric-label">Time Lost</div>
+                                <div class="metric-label">Time on Failures</div>
                             </div>
-                            <div class="metric-card money">
-                                <div class="metric-value" id="directCost">$120K</div>
+                            
+                            <!-- Row 2: Velocity Metrics -->
+                            <div class="metric-card" style="background: rgba(139, 107, 71, 0.1);">
+                                <div class="metric-value" id="currentVelocity">1.5</div>
                                 <div class="metric-label">
-                                    Direct Loss
-                                    <span class="info-tooltip" data-tooltip="Engineering + design + ad spend for failed tests">?</span>
+                                    Tests/Quarter Now
+                                    <span class="info-tooltip" data-tooltip="Limited by 8-week test cycles and failures">?</span>
+                                </div>
+                            </div>
+                            <div class="metric-card" style="background: rgba(34, 134, 58, 0.1);">
+                                <div class="metric-value" id="improvedVelocity">6</div>
+                                <div class="metric-label">
+                                    Tests/Quarter Possible
+                                    <span class="info-tooltip" data-tooltip="2-hour predictions + skip failures = 4x more tests">?</span>
                                 </div>
                             </div>
                         </div>
-                
+                    
+                        <!-- Velocity Impact Visualization -->
+                        <div style="background: linear-gradient(135deg, rgba(139, 107, 71, 0.05) 0%, rgba(139, 107, 71, 0.1) 100%); 
+                                    border: 2px solid rgba(139, 107, 71, 0.2); 
+                                    border-radius: 12px; 
+                                    padding: 32px; 
+                                    margin-bottom: 24px;">
+
+                            <h4 style="font-size: 20px; font-weight: 600; margin-bottom: 24px; color: var(--text-primary); text-align: center;">
+                                🚀 Testing Velocity Transformation
+                            </h4>
+
+                            <!-- Before/After Comparison -->
+                            <div
+                                style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 24px; align-items: center; margin-bottom: 24px;">
+                                <!-- Current State -->
+                                <div style="text-align: center;">
+                                    <div style="font-size: 14px; color: var(--text-tertiary); margin-bottom: 8px;">NOW</div>
+                                    <div
+                                        style="background: rgba(220, 53, 69, 0.1); padding: 16px; border-radius: 8px; border: 1px solid rgba(220, 53, 69, 0.2);">
+                                        <div style="font-size: 32px; font-weight: 700; color: var(--error); margin-bottom: 4px;">
+                                            <span id="currentWinnersDisplay">4</span>
+                                        </div>
+                                        <div style="font-size: 14px; color: var(--text-secondary);">winners/year</div>
+                                        <div style="font-size: 12px; color: var(--text-tertiary); margin-top: 8px;">
+                                            (<span id="currentTestsDisplay">12</span> tests × <span id="currentWinRateDisplay">30%</span> win
+                                            rate)
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Arrow -->
+                                <div style="font-size: 32px; color: var(--accent);">→</div>
+
+                                <!-- Future State -->
+                                <div style="text-align: center;">
+                                    <div style="font-size: 14px; color: var(--text-tertiary); margin-bottom: 8px;">WITH WHYUSER</div>
+                                    <div
+                                        style="background: rgba(34, 134, 58, 0.1); padding: 16px; border-radius: 8px; border: 1px solid rgba(34, 134, 58, 0.2);">
+                                        <div style="font-size: 32px; font-weight: 700; color: var(--success); margin-bottom: 4px;">
+                                            <span id="futureWinnersDisplay">29</span>
+                                        </div>
+                                        <div style="font-size: 14px; color: var(--text-secondary);">winners/year</div>
+                                        <div style="font-size: 12px; color: var(--text-tertiary); margin-top: 8px;">
+                                            (<span id="ideasEvaluatedDisplay">36</span> ideas × 80% accuracy)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Impact Summary -->
+                            <div style="background: white; padding: 16px; border-radius: 8px; text-align: center;">
+                                <p style="font-size: 16px; margin: 0;">
+                                    <strong id="velocityMultipleDisplay">7x</strong> more validated wins =
+                                    <strong style="color: var(--success);" id="velocityRevenueDisplay">$1.25M</strong> additional annual revenue
+                                </p>
+                                <p style="font-size: 13px; color: var(--text-tertiary); margin: 8px 0 0 0;">
+                                    Each winning test worth ~$50K in annual revenue
+                                </p>
+                            </div>
+                        </div>
+                    
+                        <!-- Keep the original Direct Cost metric for backwards compatibility -->
+                        <div style="display: none;">
+                            <div class="metric-value" id="directCost">$120K</div>
+                        </div>
+                    
                         <!-- How We Calculated Button -->
                         <button class="calculation-link" onclick="openCalculationModal()">
                             How we calculated this →
                         </button>
-                
+                    
                         <!-- Traffic Warning (if applicable) -->
                         <div class="traffic-warning" id="trafficWarning" style="display: none;">
                             <div class="warning-icon" id="warningIcon">⚠️</div>
@@ -2406,7 +2540,7 @@
                                 <p><strong id="warningTitle">Statistical Significance Problem:</strong> <span id="warningMessage">With <span id="trafficAmount">2,500</span> visitors/month, you need <span id="weeksNeeded">16+ weeks</span> to reach significance. You're deciding on noise, not data.</span></p>
                             </div>
                         </div>
-                
+                    
                         <!-- Solution Box -->
                         <div class="solution-box">
                             <h4>
@@ -2433,7 +2567,7 @@
                             </div>
                             <p class="roi-note">Based on WhyUser at $999/month</p>
                         </div>
-                
+                    
                         <!-- CTA Buttons -->
                         <div class="results-cta">
                             <a href="#predictor" class="cta-primary">Predict My Next Test →</a>
@@ -3100,8 +3234,69 @@
             successMessage.classList.add('show');
         }
 
+        // Update variant display and calculate per-variant traffic
+        function updateVariantDisplay() {
+            const variantCount = parseInt(document.getElementById('variantCount').value);
+            const monthlyTraffic = parseInt(document.getElementById('monthlyTraffic').value) || 0;
+
+            // Update variant label (simplified)
+            document.getElementById('variantValue').textContent = `${variantCount} (${['A/B', 'A/B/C', 'A/B/C/D', 'A/B/C/D/E'][variantCount - 2]})`;
+
+            // Update traffic per variant
+            if (monthlyTraffic > 0) {
+                const perVariant = Math.floor(monthlyTraffic / variantCount);
+                document.getElementById('perVariantTraffic').textContent = perVariant.toLocaleString();
+                document.getElementById('trafficSplit').style.display = 'block';
+            } else {
+                document.getElementById('trafficSplit').style.display = 'none';
+            }
+        }
+
+        // Calculate required sample size for proper statistical power
+        function calculateSampleSize(baselineRate, mde, alpha = 0.05, power = 0.8) {
+            // Using standard sample size formula for proportions
+            const p1 = baselineRate;
+            const p2 = p1 * (1 + mde);
+            const pooled = (p1 + p2) / 2;
+
+            const z_alpha = 1.96; // 95% confidence
+            const z_beta = 0.84;  // 80% power
+
+            const numerator = 2 * pooled * (1 - pooled) * Math.pow(z_alpha + z_beta, 2);
+            const denominator = Math.pow(p2 - p1, 2);
+
+            return Math.ceil(numerator / denominator);
+        }
+
+        // Add event listeners with null checks
+        const monthlyTrafficInput = document.getElementById('monthlyTraffic');
+        const variantCountInput = document.getElementById('variantCount');
+
+        if (monthlyTrafficInput) {
+            monthlyTrafficInput.addEventListener('input', updateVariantDisplay);
+        }
+        if (variantCountInput) {
+            variantCountInput.addEventListener('input', updateVariantDisplay);
+        }
+        
         // Calculator functionality
         function calculateWaste() {
+            // Ensure all required elements exist
+            const requiredElements = [
+                'totalWaste', 'failureCount', 'timeWasted', 'directCost',
+                'savingsAmount', 'currentWeeks', 'roiValue', 'currentVelocity',
+                'improvedVelocity',  
+                'currentWinnersDisplay', 'futureWinnersDisplay', 'velocityMultipleDisplay',
+                'velocityRevenueDisplay'
+            ];
+            // Check if all elements exist
+            for (const id of requiredElements) {
+                if (!document.getElementById(id)) {
+                    console.error(`Missing element with ID: ${id}`);
+                    return;
+                }
+            }
+
             // Get input values
             const testsPerQuarter = parseInt(document.getElementById('testsPerQuarter').value);
             const winRate = parseInt(document.getElementById('winRate').value) / 100;
@@ -3124,11 +3319,11 @@
             const velocityCost = directCost * 0.5;
 
             // Total waste
-            const totalWaste = directCost + velocityCost;
+            let totalWaste = directCost + velocityCost;
 
             // Calculate WhyUser savings
             const preventedWaste = totalWaste * 0.75;
-            const whyUserAnnualCost = 999 * 12;
+            const whyUserAnnualCost = 500 * 12;
             const annualSavings = preventedWaste;
             const roi = Math.round(annualSavings / whyUserAnnualCost);
 
@@ -3168,30 +3363,57 @@
                 );
             }
 
-            // Traffic analysis
+            // Enhanced traffic analysis with MDE
             const trafficWarning = document.getElementById('trafficWarning');
             const warningIcon = document.getElementById('warningIcon');
             const warningTitle = document.getElementById('warningTitle');
             const warningMessage = document.getElementById('warningMessage');
 
             if (monthlyTraffic > 0 && trafficWarning) {
-                const requiredTrafficPerVariant = 2000;
-                const variantsTraffic = monthlyTraffic / 2;
-                const weeklyTrafficPerVariant = variantsTraffic / 4;
-                const weeksToSignificance = Math.ceil(requiredTrafficPerVariant / weeklyTrafficPerVariant);
+                // Get additional inputs
+                const variantCount = parseInt(document.getElementById('variantCount').value) || 2;
+                const mde = parseInt(document.getElementById('mdeValue').value) / 100 || 0.25;
+                const baselineConversion = parseInt(document.getElementById('baselineConversion').value) / 100 || 0.03;
+
+                // Calculate traffic per variant
+                const trafficPerVariant = Math.floor(monthlyTraffic / variantCount);
+                const weeklyTrafficPerVariant = trafficPerVariant / 4;
+
+                // Calculate required sample size
+                const requiredSampleSize = calculateSampleSize(baselineConversion, mde);
+                const weeksToSignificance = Math.ceil(requiredSampleSize / weeklyTrafficPerVariant);
 
                 trafficWarning.style.display = 'flex';
 
-                if (weeksToSignificance > testDuration) {
+                if (weeksToSignificance > 52) {
+                    // Never reach significance
+                    warningIcon.textContent = '🚨';
+                    warningTitle.textContent = 'Statistical Impossibility:';
+                    warningMessage.innerHTML = `With <span style="color: var(--error); font-weight: 600;">${monthlyTraffic.toLocaleString()}</span> total visitors split across <span style="color: var(--error); font-weight: 600;">${variantCount} variants</span> (${trafficPerVariant.toLocaleString()} each), you need <span style="color: var(--error); font-weight: 600;">${requiredSampleSize.toLocaleString()}</span> per variant to detect a ${(mde * 100).toFixed(0)}% lift. At current traffic: <span style="color: var(--error); font-weight: 600;">NEVER</span>. You're making million-dollar decisions on statistical noise.`;
+                    trafficWarning.style.background = 'rgba(220, 53, 69, 0.1)';
+                    trafficWarning.style.borderColor = 'rgba(220, 53, 69, 0.3)';
+
+                    // Add to waste calculation - cost of false negatives
+                    const falseNegativeWaste = Math.round(testsPerYear * 0.4 * costPerTest);
+                    totalWaste += falseNegativeWaste;
+
+                } else if (weeksToSignificance > testDuration) {
+                    // Can't reach significance in time
                     warningIcon.textContent = '⚠️';
-                    warningTitle.textContent = 'Statistical Significance Problem:';
-                    warningMessage.innerHTML = `With <span style="color: var(--warning); font-weight: 600;">${monthlyTraffic.toLocaleString()}</span> visitors/month, you need <span style="color: var(--warning); font-weight: 600;">${weeksToSignificance}+ weeks</span> to reach significance. You're deciding on noise, not data.`;
+                    warningTitle.textContent = 'Underpowered Tests:';
+                    warningMessage.innerHTML = `To detect a <span style="color: var(--warning); font-weight: 600;">${(mde * 100).toFixed(0)}% lift</span> with ${variantCount} variants, you need <span style="color: var(--warning); font-weight: 600;">${weeksToSignificance} weeks</span> but only run ${testDuration}-week tests. Result: <span style="color: var(--warning); font-weight: 600;">30% false negatives</span> (real winners declared losers).`;
                     trafficWarning.style.background = 'rgba(245, 158, 11, 0.1)';
                     trafficWarning.style.borderColor = 'rgba(245, 158, 11, 0.3)';
+
+                    // Add false negative cost
+                    const falseNegativeWaste = Math.round(testsPerYear * 0.3 * costPerTest);
+                    totalWaste += falseNegativeWaste;
+
                 } else {
+                    // Properly powered
                     warningIcon.textContent = '✅';
-                    warningTitle.textContent = 'Good News:';
-                    warningMessage.innerHTML = `With <span style="color: var(--success); font-weight: 600;">${monthlyTraffic.toLocaleString()}</span> visitors/month, you can reach statistical significance in <span style="color: var(--success); font-weight: 600;">${weeksToSignificance} weeks</span>. But you're still wasting ${testDuration} weeks on failures!`;
+                    warningTitle.textContent = 'Properly Powered:';
+                    warningMessage.innerHTML = `Great! With <span style="color: var(--success); font-weight: 600;">${trafficPerVariant.toLocaleString()}</span> visitors per variant, you can detect a ${(mde * 100).toFixed(0)}% lift in <span style="color: var(--success); font-weight: 600;">${weeksToSignificance} weeks</span>. But you're still wasting money on the ${Math.round((1 - winRate) * 100)}% that fail!`;
                     trafficWarning.style.background = 'rgba(34, 134, 58, 0.08)';
                     trafficWarning.style.borderColor = 'rgba(34, 134, 58, 0.2)';
                 }
@@ -3212,6 +3434,51 @@
                 // Smooth scroll to results
                 results.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
+            
+            // Calculate velocity metrics
+            const weeklyTestCapacity = 52; // weeks per year
+            const currentTestDuration = testDuration; // weeks per test
+
+            // Current state
+            const currentWinners = Math.round(testsPerYear * winRate);
+            const currentQuarterlyTests = testsPerQuarter; // What they input
+
+            // With WhyUser - the key insight:
+            // 1. Evaluate 3-4x more ideas quickly (2 hours each)
+            // 2. Only build & test the predicted winners
+            // 3. 80% win rate instead of 30%
+
+            // They can evaluate many more ideas because prediction is fast
+            const ideasEvaluatedPerQuarter = testsPerQuarter * 3; // Conservative 3x
+            const ideasEvaluatedPerYear = ideasEvaluatedPerQuarter * 4;
+
+            // But only build the predicted winners
+            const whyUserWinRate = 0.8; // 80% accuracy
+            const whyUserWinnersPerYear = Math.round(ideasEvaluatedPerYear * whyUserWinRate);
+            const whyUserQuarterlyWinners = Math.round(whyUserWinnersPerYear / 4);
+
+            // Revenue impact
+            const avgWinnerValue = 50000; // $50K per winning test (conservative)
+            const currentAnnualValue = currentWinners * avgWinnerValue;
+            const whyUserAnnualValue = whyUserWinnersPerYear * avgWinnerValue;
+            const velocityRevenue = whyUserAnnualValue - currentAnnualValue;
+            const velocityMultiple = Math.round(whyUserWinnersPerYear / Math.max(currentWinners, 1));
+
+            // Update displays
+            document.getElementById('currentVelocity').textContent = currentQuarterlyTests.toFixed(1);
+            document.getElementById('improvedVelocity').textContent = whyUserQuarterlyWinners;
+        
+            // Update the new velocity visualization display elements
+            document.getElementById('currentWinnersDisplay').textContent = currentWinners;
+            document.getElementById('currentTestsDisplay').textContent = testsPerYear;
+            document.getElementById('currentWinRateDisplay').textContent = Math.round(winRate * 100) + '%';
+            document.getElementById('futureWinnersDisplay').textContent = whyUserWinnersPerYear;
+            document.getElementById('ideasEvaluatedDisplay').textContent = ideasEvaluatedPerYear;
+            document.getElementById('velocityMultipleDisplay').textContent = velocityMultiple + 'x';
+            document.getElementById('velocityRevenueDisplay').textContent = '$' + (velocityRevenue / 1000000).toFixed(2) + 'M';
+
+            // Add velocity revenue to total savings
+            const totalSavingsWithVelocity = annualSavings + velocityRevenue;
         }
 
         // Modal functions
@@ -3234,17 +3501,31 @@
             }
         }
 
-        // Update slider values in real-time
-        document.getElementById('testsPerQuarter').addEventListener('input', function () {
-            document.getElementById('testsValue').textContent = `${this.value} tests`;
-        });
+        // Wait for DOM to be fully loaded before adding event listeners
+        document.addEventListener('DOMContentLoaded', function () {
+            // Update slider values in real-time
+            const testsPerQuarterSlider = document.getElementById('testsPerQuarter');
+            if (testsPerQuarterSlider) {
+                testsPerQuarterSlider.addEventListener('input', function () {
+                    document.getElementById('testsValue').textContent = `${this.value} tests`;
+                });
+            }
 
-        document.getElementById('winRate').addEventListener('input', function () {
-            document.getElementById('winRateValue').textContent = `${this.value}%`;
-        });
+            const winRateSlider = document.getElementById('winRate');
+            if (winRateSlider) {
+                winRateSlider.addEventListener('input', function () {
+                    document.getElementById('winRateValue').textContent = `${this.value}%`;
+                });
+            }
 
-        document.getElementById('costPerTest').addEventListener('input', function () {
-            document.getElementById('costValue').textContent = `$${parseInt(this.value).toLocaleString()}`;
+            const costPerTestSlider = document.getElementById('costPerTest');
+            if (costPerTestSlider) {
+                costPerTestSlider.addEventListener('input', function () {
+                    document.getElementById('costValue').textContent = `$${parseInt(this.value).toLocaleString()}`;
+                });
+            }
+
+            // Add any other event listeners here
         });
     </script>
 
